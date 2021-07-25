@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
+import { io } from 'socket.io-client'
 import ChannelList from './ChannelList'
 import MessagesPanel from './MessagesPanel'
 import axios from 'axios'
@@ -11,6 +12,8 @@ const Chat = () => {
         name: 'first',
         participants: 10
     }])
+    const [socket, setSocket] = useState(io(process.env.REACT_APP_SERVER_URL))
+    const [channel, setChannel] = useState(null)
 
     useEffect (() => {
         const loadChannels = async () => {
@@ -20,11 +23,25 @@ const Chat = () => {
         }
 
         loadChannels()
-    }, [])
+    }, [channel])
+
+    socket.on('connection', () => {
+        console.log('Im connected with the backend')
+    })
+
+    const handleChannelSelect = (id) => {
+        let channel = channels.find(c => {
+            return c.id === id
+        })
+        setChannel({ channel })
+        socket.emit('channel-join', id, ack => {
+            // will be filled out later
+        })
+    }
 
     return (
         <div className="chat-app">
-            <ChannelList channels={channels} />
+            <ChannelList channels={channels} onSelectChannel={handleChannelSelect} />
             <MessagesPanel />
         </div>
     )
