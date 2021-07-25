@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import ChannelList from './ChannelList'
+import MessagesPanel from './MessagesPanel'
 import './chat.css'
 
 const Chat = () => {
@@ -13,6 +14,7 @@ const Chat = () => {
     return (
         <div className="chat-app">
             <ChannelList channels={channels} />
+            <MessagesPanel />
         </div>
     )
 }
