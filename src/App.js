@@ -14,7 +14,7 @@ function App() {
     setColor(`#${Math.floor(Math.random()*16777215).toString(16)}`)
     setUsername(name)
 
-    socket = io({
+    socket = io(`${process.env.REACT_APP_SERVER_URL}`, {
       query: {
         username: name,
         color: color 
