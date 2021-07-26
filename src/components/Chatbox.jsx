@@ -18,7 +18,8 @@ const Chatbox = props => {
         console.log('something happened', msg)
         setMsgHistory(prev => [{
             username: msg.username,
-            content: msg.content
+            content: msg.content,
+            color: msg.color
         }, ...prev])
     }
 
@@ -26,12 +27,21 @@ const Chatbox = props => {
         e.preventDefault()
         props.socket.emit('chat message', {
             username: props.username,
-            content: message
+            content: message,
+            color: props.color
         })
         setMessage('')
     }
 
     const handleChange = e => { setMessage(e.target.value) }
+
+    let messages = msgHistory.map((msg, idx) => {
+        return (
+            <p key={idx} style={{ backgroundColor: 'rgb(75, 75, 75)', borderRadius: '20px', padding: '5px 10px' }}>
+                <span style={{ color: msg.color }}>{msg.username}</span> : {msg.content}
+            </p>
+        )
+    })
 
     return (
         <div className="container mt-4">
@@ -39,7 +49,7 @@ const Chatbox = props => {
                 <Card.Header>Chat App</Card.Header>
                 <Card.Body className="overflow-auto" style={{ width: '100%', height: '100%'}} >
                     <Card.Text className="d-flex flex-column-reverse">
-                        {msgHistory.map((msg, idx) => <p key={idx}>{msg.username} says: {msg.content}</p>)}
+                        {messages}
                     </Card.Text>
                 </Card.Body>
                 <Card.Footer style={{ paddingBottom: '0' }}>
