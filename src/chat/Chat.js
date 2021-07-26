@@ -10,30 +10,64 @@ const Chat = () => {
     const [channels, setChannels] = useState([{
         id: 1,
         name: 'first',
-        participants: 10
+        participants: 0
     }])
     const [socket, setSocket] = useState(io(process.env.REACT_APP_SERVER_URL))
     const [channel, setChannel] = useState(null)
 
     useEffect (() => {
-        const loadChannels = async () => {
-            let res = await axios.get(`${process.env.REACT_APP_SERVER_URL}/getChannels`)
-
-            setChannels(res.data.channels)
-        }
-
         loadChannels()
+        configureSocket()
     }, [channel])
 
-    socket.on('connection', () => {
-        console.log('Im connected with the backend')
-    })
+    const loadChannels = async () => {
+        let res = await axios.get(`${process.env.REACT_APP_SERVER_URL}/getChannels`)
+
+        setChannels(res.data.channels)
+    }
+    
+    const configureSocket = () => {
+        socket.on('connection', () => {
+            if(channel){
+                handleChannelSelect(channel.id)
+            }
+        })
+
+        socket.on('channel', (channel) => {
+            let tempChannels = channels
+            tempChannels.forEach(c => {
+                if(c.id === channel.id){
+                    c.participants = channel.participants
+                }
+            })
+
+            setChannels([{ tempChannels }])
+        })
+
+        socket.on('message', (message) => {
+            let tempChannels = channels
+            tempChannels.forEach(c => {
+                if(c.id === message.channel_id) {
+                    if (!c.messages) {
+                        c.messages = [message]
+                    } else {
+                        c.messages.push(message)
+                    }
+                }
+            })
+
+            setChannels([{ tempChannels }])
+        })
+
+        console.log('👻', channels)
+
+    }
 
     const handleChannelSelect = (id) => {
-        let channel = channels.find(c => {
+        let tempChannel = channels.find(c => {
             return c.id === id
         })
-        setChannel({ channel })
+        setChannel({ tempChannel })
         socket.emit('channel-join', id, ack => {
             // will be filled out later
         })
