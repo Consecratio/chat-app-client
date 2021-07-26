@@ -19,7 +19,8 @@ const Chatbox = props => {
         setMsgHistory(prev => [{
             username: msg.username,
             content: msg.content,
-            color: msg.color
+            color: msg.color,
+            time: msg.time
         }, ...prev])
     }
 
@@ -28,7 +29,8 @@ const Chatbox = props => {
         props.socket.emit('chat message', {
             username: props.username,
             content: message,
-            color: props.color
+            color: props.color,
+            time: new Date().toLocaleTimeString()
         })
         setMessage('')
     }
@@ -37,9 +39,10 @@ const Chatbox = props => {
 
     let messages = msgHistory.map((msg, idx) => {
         return (
-            <p key={idx} style={{ backgroundColor: 'rgb(75, 75, 75)', borderRadius: '20px', padding: '5px 10px' }}>
-                <span style={{ color: msg.color }}>{msg.username}</span> : {msg.content}
-            </p>
+            <div key={idx} className="mt-3" style={{ backgroundColor: 'rgb(75, 75, 75)', borderRadius: '20px', padding: '5px 15px' }}>
+                <p style={{ marginBottom: '0', color: msg.color }}>{msg.username}  <span style={{ color: 'lightgrey' }}>{msg.time}</span></p>
+                <p style={{ marginBottom: '0' }}>{msg.content}</p>
+            </div>
         )
     })
 
