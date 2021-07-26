@@ -48,9 +48,9 @@ const Chatbox = props => {
             <Card bg="dark" text="white" style={{ minWidth: '50vw', height: '90vh' }} className="mx-auto mb-2">
                 <Card.Header>Chat App</Card.Header>
                 <Card.Body className="overflow-auto" style={{ width: '100%', height: '100%'}} >
-                    <Card.Text className="d-flex flex-column-reverse">
+                    <div className="d-flex flex-column-reverse">
                         {messages}
-                    </Card.Text>
+                    </div>
                 </Card.Body>
                 <Card.Footer style={{ paddingBottom: '0' }}>
                     <Form onSubmit={handleSubmit}>
