@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, Form, Card } from 'react-bootstrap'
+import { Button, Form, Card, InputGroup, FormControl } from 'react-bootstrap'
 
 const Chatbox = props => {
     const [message, setMessage] = useState("")
@@ -34,20 +34,31 @@ const Chatbox = props => {
     const handleChange = e => { setMessage(e.target.value) }
 
     return (
-        <div className="chatbox">
-            <Card bg="dark" text="white" style={{ width: '100vw', height: '75vh' }} className="mb-2">
+        <div className="container mt-4">
+            <Card bg="dark" text="white" style={{ minWidth: '50vw', height: '90vh' }} className="mx-auto mb-2">
                 <Card.Header>Chat App</Card.Header>
-                <Card.Body>
-                    <Card.Text className="overflow-auto" style={{ width: '100%', height: '100%'}}>
+                <Card.Body className="overflow-auto" style={{ width: '100%', height: '100%'}} >
+                    <Card.Text className="d-flex flex-column-reverse">
                         {msgHistory.map((msg, idx) => <p key={idx}>{msg.username} says: {msg.content}</p>)}
                     </Card.Text>
                 </Card.Body>
-                <Form onSubmit={handleSubmit}>
-                    <Form.Group className="mb-3" controlId="formBasicText">
-                        <Form.Control type="text" value={message} onChange={handleChange} />
-                    </Form.Group>
-                    <Button variant="primary" size="sm" type="submit">Send</Button>
-                </Form>
+                <Card.Footer style={{ paddingBottom: '0' }}>
+                    <Form onSubmit={handleSubmit}>
+                        <InputGroup className="mb-3" onSubmit={handleSubmit}>
+                            <FormControl
+                            placeholder="New Message..."
+                            aria-label="New Message..."
+                            aria-describedby="basic-addon2"
+                            type="text"
+                            value={message}
+                            onChange={handleChange}
+                            />
+                            <Button variant="primary" type="submit" id="button-addon2">
+                                Send
+                            </Button>
+                        </InputGroup>
+                    </Form>
+                </Card.Footer>
             </Card>
         </div>
     )
