@@ -12,7 +12,16 @@ function App() {
   const [modalShow, setModalShow] = useState(true)
 
   useEffect(() => {
-    setColor(`#${Math.floor(Math.random()*16777215).toString(16)}`)
+    function getRandomColor() {
+      var letters = ['A', 'B', 'C', 'D', 'E', 'F']
+      var newColor = '#';
+      for (var i = 0; i < 6; i++ ) {
+          newColor += letters[Math.floor(Math.random() * letters.length)];
+      }
+      return newColor;
+    }
+
+    setColor(getRandomColor())
 
     if(username !== ""){
       socket = io(`${process.env.REACT_APP_SERVER_URL}`, {
