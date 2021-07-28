@@ -65,6 +65,7 @@ const Chatbox = props => {
                             type="text"
                             value={message}
                             onChange={handleChange}
+                            style={{ backgroundColor: "#343A40", color: "#B0C9D9"}}
                             />
                             <Button variant="primary" type="submit" id="button-addon2">
                                 Send
