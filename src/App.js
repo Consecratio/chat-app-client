@@ -13,12 +13,10 @@ function App() {
 
   useEffect(() => {
     function getRandomColor() {
-      var letters = ['A', 'B', 'C', 'D', 'E', 'F']
-      var newColor = '#';
-      for (var i = 0; i < 6; i++ ) {
-          newColor += letters[Math.floor(Math.random() * letters.length)];
-      }
-      return newColor;
+      const hue = Math.floor(Math.random() * 360)
+      const saturation = (Math.floor(Math.random() * 51) + 50) + "%"
+      const lightness = (Math.floor(Math.random() * 30) + 50) + "%"
+      return "hsl(" + hue + ", " + saturation + ", " + lightness + ")"
     }
 
     setColor(getRandomColor())
